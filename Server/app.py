@@ -1,3 +1,4 @@
+from initializers.environment_config import EnvironmentConfig
 from flask import Flask
 from flask_cors import CORS
 from flask_jwt_extended import (
@@ -14,6 +15,7 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_port=1)
 
 with app.app_context():
     from initializers.setup_config import SetupConfig
+    EnvironmentConfig().development_server()
     SetupConfig(app)
     db.init_app(app)
     migrate = Migrate(app, db, compare_type=True)
