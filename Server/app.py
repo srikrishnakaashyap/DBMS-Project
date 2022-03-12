@@ -1,3 +1,4 @@
+from initializers.register_all_blueprints import RegisterBlueprints
 from initializers.environment_config import EnvironmentConfig
 from flask import Flask
 from flask_cors import CORS
@@ -23,7 +24,8 @@ with app.app_context():
     mail = Mail(app)
     CORS(app)
     jwt = JWTManager(app)
+    RegisterBlueprints(app)
     app.config['JWT_TOKEN_LOCATION'] = ['headers']
-    app.run(host="127.0.0.1", port=5000,)
+    app.run(host="0.0.0.0", port=5002,)
 
     print("Server Running")
