@@ -2,6 +2,8 @@ from flask import Blueprint, request, redirect, url_for, render_template, flash
 
 from models.users import User
 
+from services.database_service import DatabaseService
+
 request_blueprint = Blueprint('request', __name__, template_folder="templates")
 
 
@@ -9,8 +11,23 @@ request_blueprint = Blueprint('request', __name__, template_folder="templates")
 def request_function():
     print("Request Received")
 
-    request_data = dict(request.json)
-    # Query and Get Data with AWS                                         
+    # print("REQUEST", request.data)
 
-    return request_data, 200
+    request_data = dict(request.json)
+    # Query and Get Data with AWS
+    # 
+    #                                          
+
+    if request_data['isSqlBtn']:
+        # Execute in SQL Table
+        response = DatabaseService().execute_mysql_query(request_data['query'])
+    elif request_data['isRsBtn']:
+        #Execute RS Table
+        response = DatabaseService().execute_mysql_query(request_data['query'])
+
+    else:
+        return {"Response": "Wrong Option Selected"}, 404
+
+
+    return {}, 200
 
