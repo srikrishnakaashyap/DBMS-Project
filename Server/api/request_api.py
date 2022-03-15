@@ -20,14 +20,11 @@ def request_function():
 
     if request_data['isSqlBtn']:
         # Execute in SQL Table
-        response = DatabaseService().execute_mysql_query(request_data['query'])
+        response, code = DatabaseService().execute_mysql_query(request_data['query'])
     elif request_data['isRsBtn']:
         #Execute RS Table
-        response = DatabaseService().execute_redshift_query(request_data['query'])
-
-    else:
-        return {"Response": "Wrong Option Selected"}, 404
+        response, code = DatabaseService().execute_redshift_query(request_data['query'])
 
 
-    return {}, 200
+    return response, code
 

@@ -1,56 +1,60 @@
-
-# import redshift_connector
 import psycopg2
+import jsonify
+import mysql.connector
+from flask import jsonify
 
-
+import time
 class DatabaseService:
+
+    MySqlConnection = None
+    RedShiftConnection = None
 
 
     def execute_redshift_query(self, query):
 
-        ENDPOINT,PORT,USER,PASSWORD,REGION,DBNAME = self.get_credentials("REDSHIFT")
+        conn = DatabaseService.get_connection("REDSHIFT")
+        cursor = conn.cursor()
 
-        print("EXECUTING")
+        t1 = time.time()
 
-        with psycopg2.connect(
-            host=ENDPOINT,
-            port=PORT,
-            user=USER,
-            database=DBNAME,
-            password=PASSWORD) as conn:
-            with conn.cursor as cursor:
-                print("INSIDE THE CURSOR")
-                cursor.execute("select * from aisles;")
-                print("111")
-                answer = cursor.fetchall()
-                print("@222")
-                print(answer)
+        try:
+            cursor.execute(query)
+        except Exception as err:
+            return {"Response": "WRONG QUERY"}, 406
 
+        answer = cursor.fetchall()
 
+        t2 = time.time()
 
+        t = t2 - t1
 
-        print(ENDPOINT,PORT,USER,REGION,DBNAME)
+        print(t)
+
+        return jsonify({"Response": answer, "Elapsed Time": t*1000}), 200
+
 
     
     def execute_mysql_query(self, query):
 
-        ENDPOINT,PORT,USER,PASSWORD,REGION,DBNAME = self.get_credentials("MYSQL")
+        conn = DatabaseService.get_connection("MYSQL")
+        cursor = conn.cursor()
 
-        with psycopg2.connect(
-            host=ENDPOINT,
-            port=PORT,
-            user=USER,
-            database=DBNAME,
-            password=PASSWORD) as conn:
-            with conn.cursor as cursor:
-                print("INSIDE THE CURSOR")
-                cursor.execute("select * from aisles;")
-                print("111")
-                answer = cursor.fetchall()
-                print("@222")
-                print(answer)
+        t1 = time.time()
 
-        print(ENDPOINT,PORT,USER,REGION,DBNAME)
+        try:
+            cursor.execute(query)
+        except Exception as err:
+            return {"Response": "WRONG QUERY"}, 406
+
+        answer = cursor.fetchall()
+
+        t2 = time.time()
+
+        t = t2 - t1
+
+        print(t)
+
+        return jsonify({"Response": answer, "Elapsed Time": t*1000}), 200
 
 
     @staticmethod
@@ -75,4 +79,46 @@ class DatabaseService:
             REGION="us-east-1"
             DBNAME="instacart"
             return ENDPOINT,PORT,USER,PASSWORD,REGION,DBNAME
+
+    @staticmethod
+    def create_connection():
+
+        try:
+            ENDPOINT,PORT,USER,PASSWORD,REGION,DBNAME = DatabaseService.get_credentials("REDSHIFT")
+            conn = psycopg2.connect(
+            host=ENDPOINT,
+            port=PORT,
+            user=USER,
+            database=DBNAME,
+            password=PASSWORD)
+            DatabaseService.RedShiftConnection = conn
+
+        except Exception as err:
+            print(err.code, err)
+        
+        try:
+            ENDPOINT,PORT,USER,PASSWORD,REGION,DBNAME = DatabaseService.get_credentials("MYSQL")
+            conn = mysql.connector.connect(
+            host=ENDPOINT,
+            port=PORT,
+            user=USER,
+            database=DBNAME,
+            password=PASSWORD)
+            DatabaseService.MySqlConnection = conn
+
+        except Exception as err:
+            print(err.code, err)
+
+    @staticmethod
+    def get_connection(database):
+        
+        if(database == "MYSQL"):
+            if DatabaseService.MySqlConnection == None:
+                DatabaseService.create_connection()
+            conn = DatabaseService.MySqlConnection
+        else:
+            if DatabaseService.RedShiftConnection == None:
+                DatabaseService.create_connection()
+            conn = DatabaseService.RedShiftConnection
+        return conn
 

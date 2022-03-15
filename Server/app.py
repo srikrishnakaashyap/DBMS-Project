@@ -1,3 +1,4 @@
+from services.database_service import DatabaseService
 from initializers.register_all_blueprints import RegisterBlueprints
 from initializers.environment_config import EnvironmentConfig
 from flask import Flask
@@ -25,6 +26,7 @@ with app.app_context():
     CORS(app)
     jwt = JWTManager(app)
     RegisterBlueprints(app)
+    DatabaseService.create_connection()
     app.config['JWT_TOKEN_LOCATION'] = ['headers']
     app.run(host="0.0.0.0", port=5002,)
 
