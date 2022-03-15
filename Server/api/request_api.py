@@ -23,7 +23,7 @@ def request_function():
         response = DatabaseService().execute_mysql_query(request_data['query'])
     elif request_data['isRsBtn']:
         #Execute RS Table
-        response = DatabaseService().execute_mysql_query(request_data['query'])
+        response = DatabaseService().execute_redshift_query(request_data['query'])
 
     else:
         return {"Response": "Wrong Option Selected"}, 404
