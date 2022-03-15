@@ -12,13 +12,12 @@ class DatabaseService:
 
         print("EXECUTING")
 
-        with redshift_connector.connect(
+        with psycopg2.connect(
             host=ENDPOINT,
             port=PORT,
             user=USER,
             database=DBNAME,
-            password=PASSWORD,
-            region=REGION) as conn:
+            password=PASSWORD) as conn:
             with conn.cursor as cursor:
                 print("INSIDE THE CURSOR")
                 cursor.execute("select * from aisles;")
@@ -36,6 +35,20 @@ class DatabaseService:
     def execute_mysql_query(self, query):
 
         ENDPOINT,PORT,USER,PASSWORD,REGION,DBNAME = self.get_credentials("MYSQL")
+
+        with psycopg2.connect(
+            host=ENDPOINT,
+            port=PORT,
+            user=USER,
+            database=DBNAME,
+            password=PASSWORD) as conn:
+            with conn.cursor as cursor:
+                print("INSIDE THE CURSOR")
+                cursor.execute("select * from aisles;")
+                print("111")
+                answer = cursor.fetchall()
+                print("@222")
+                print(answer)
 
         print(ENDPOINT,PORT,USER,REGION,DBNAME)
 
