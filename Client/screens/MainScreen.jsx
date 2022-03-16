@@ -38,6 +38,7 @@ const MainScreen = () => {
     }
   };
 
+  // Improve the UI Here,
   return (
     <View style={styles.container}>
       <View style={{ flex: 1 }}>

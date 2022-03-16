@@ -6,6 +6,7 @@ const ViewResults = (props) => {
     <View style={styles.container}>
       <Table></Table>
     </View>
+    // Button to go back to the main screen to enter the query again
   );
 };
 
