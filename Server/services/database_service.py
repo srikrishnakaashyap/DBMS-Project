@@ -20,9 +20,10 @@ class DatabaseService:
         try:
             cursor.execute(query)
         except Exception as err:
-            return {"Response": "WRONG QUERY"}, 406
+            return {"Response": "WRONG QUERY", "Status": 406}
 
         answer = cursor.fetchall()
+        cols = cursor.column_names
 
         t2 = time.time()
 
@@ -30,7 +31,7 @@ class DatabaseService:
 
         print(t)
 
-        return jsonify({"Response": answer, "Elapsed Time": t*1000}), 200
+        return jsonify({"Header": cols, "Response": answer, "ElapsedTime": t*1000, "Status": 200})
 
 
     
@@ -44,9 +45,12 @@ class DatabaseService:
         try:
             cursor.execute(query)
         except Exception as err:
-            return {"Response": "WRONG QUERY"}, 406
+            return {"Response": "WRONG QUERY", "Status": 406}
 
         answer = cursor.fetchall()
+        cols = cursor.column_names
+        # answer.insert(0,cursor.column_names)
+        # res = [dict(zip(cols, row)) for row in answer]
 
         t2 = time.time()
 
@@ -54,7 +58,7 @@ class DatabaseService:
 
         print(t)
 
-        return jsonify({"Response": answer, "Elapsed Time": t*1000}), 200
+        return jsonify({"Header": cols, "Response": answer, "ElapsedTime": t*1000, "Status": 200})
 
 
     @staticmethod
