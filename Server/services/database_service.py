@@ -20,7 +20,7 @@ class DatabaseService:
         try:
             cursor.execute(query)
         except Exception as err:
-            return {"Response": "WRONG QUERY", "Status": 406}
+            return {"Response": str(err), "Status": 406}
 
         answer = cursor.fetchall()
         # cols = cursor.column_names
@@ -46,7 +46,8 @@ class DatabaseService:
         try:
             cursor.execute(query)
         except Exception as err:
-            return {"Response": "WRONG QUERY", "Status": 406}
+            print(err)
+            return {"Response": err.msg, "Status": 406}
 
         answer = cursor.fetchall()
         cols = cursor.column_names

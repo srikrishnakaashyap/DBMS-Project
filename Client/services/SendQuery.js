@@ -1,8 +1,8 @@
-const SendQuery = (query, database, setData, setCol, setTime) => {
+const SendQuery = (query, database, setData, setCol, setTime, setLoading) => {
   console.log(query);
   // console.log(isSqlBtn);
   // console.log(isRsBtn);
-
+  setLoading(true);
   fetch("http://192.168.1.248:5002/request", {
       method: "POST",
       headers: {
@@ -32,13 +32,17 @@ const SendQuery = (query, database, setData, setCol, setTime) => {
           setData(data);
           setCol(cols);
           setTime(responseJson.ElapsedTime);
+          setLoading(false);
         } else {
           // We need to display the same screen with the error..
+          setLoading(false);
           alert(responseJson.Response);
+          
         }
       })
       .catch((error) => {
         console.log("FROM ERROR");
+        setLoading(false);
         console.log(error);
       });
 };

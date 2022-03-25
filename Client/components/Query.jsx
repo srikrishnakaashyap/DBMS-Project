@@ -23,7 +23,7 @@ import SendQuery from "../services/SendQuery";
 
 import ViewResults from "./ViewResults";
 
-const Query = ({setCol, setData, setTime, database}) => {
+const Query = ({setCol, setData, setTime, database, setLoading}) => {
   const [getQuery, setQuery] = useState("");
   // const [getSqlBtn, setSqlBtn] = useState(true);
   // const [getRsBtn, setRsBtn] = useState(false);
@@ -38,7 +38,7 @@ const Query = ({setCol, setData, setTime, database}) => {
       setQueryProcess(false);
       alert("Please enter a query");
     } else {
-      SendQuery(getQuery, "MySQL", setData, setCol, setTime);
+      SendQuery(getQuery, "MySQL", setData, setCol, setTime, setLoading);
       // console.log("tmp: ",tmp);
       console.log(database);
     //   fetch("http://192.168.1.248:5002/request", {

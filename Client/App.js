@@ -1,6 +1,7 @@
 // import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { View, Platform, KeyboardAvoidingView, StyleSheet, Keyboard, TouchableWithoutFeedback, ScrollView } from "react-native";
+import { ActivityIndicator } from "react-native";
 
 import Header from "./components/Header";
 import Query from "./components/Query";
@@ -16,6 +17,7 @@ export default function App() {
   // const [getSqlBtn, setSqlBtn] = useState(true);
   // const [getRsBtn, setRsBtn] = useState(false);
   const [database, setDatabase] = useState("MySQL");
+  const [loading, setLoading] = useState(false);
 
   return (
     <KeyboardAvoidingView
@@ -26,8 +28,9 @@ export default function App() {
         <ScrollView>
       <View>
         <Header database={database} setDatabase={setDatabase}/>
-        <Query setCol={setCol} setData={setData} setTime={setTime} database={database}/>
-        <ViewResults col={col} data={data} time={time}></ViewResults>
+        <Query setCol={setCol} setData={setData} setTime={setTime} database={database} setLoading={setLoading}/>
+        {!loading && <ViewResults col={col} data={data} time={time}></ViewResults>}
+        {loading && <ActivityIndicator size="large" color={"#00d1b550"} />}
       </View>
       </ScrollView>
       </TouchableWithoutFeedback>
