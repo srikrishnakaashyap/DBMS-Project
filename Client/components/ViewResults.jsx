@@ -5,82 +5,60 @@ import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-componen
 
 const ViewResults = ({col,data,time}) => {
   console.log(data);
-  // const [numCols, setNumCols] = useState(0);
-  // const [cols, setCols] = useState([]);
-  // const cols = [];
-
-  // useEffect(()=>{
-  //   // console.log(data.data);
-  //   // let col = [];
-  //   if(data.data && data.data.length>0) {
-  //     let numCols = data.data[0].length;
-  //     console.log(data.data[0].length);
-  //     console.log(numCols);
-  //     for(let i=0;i<numCols;i++) {
-  //       cols.push("Column "+String(i));
-  //     }
-  //   }
-  //   console.log(cols);
-  //   // setCols(col);
-  // });
 
   return (
-    // <View onStartShouldSetResponder={() => true}>
-    //   <ScrollView>
-    //   <ScrollView horizontal = {true}>
-    //     <Table borderStyle={{borderWidth: 1}}>
-    //       <Row data={col} style={styles.HeadStyle} textStyle={styles.TableText}/>
-    //       <Rows data={data} style={styles.RowStyle} textStyle={styles.TableText}/>
-    //     </Table>
-    //   </ScrollView>
-    //   </ScrollView>
-    //   </View>
-    // <ScrollView>
-    <View onStartShouldSetResponder={() => true} >
+    <View onStartShouldSetResponder={() => true}>
       <Text style={styles.elapsedTime}>Elapsed Time: {time}</Text>
-      {/* <ScrollView> */}
+      <ScrollView>
       <ScrollView horizontal = {true}>
-      <DataTable>
-        <DataTable.Header style={styles.databeHeader}>
-          {
-            col.map((colName, index) => {
-              return (
-                <DataTable.Title key={index}>{colName}</DataTable.Title>
-              )
-            })
-          }
-        </DataTable.Header>
-        <ScrollView style={styles.dataWrapper}>
-        {
-          data.map((row, index) => {
-            return (
-              <DataTable.Row key={index} style={styles.databeBox}>
-                {
-                  row.map((cell,index) => {
-                    return (
-                      <DataTable.Cell key={index}>{cell}</DataTable.Cell>
-                    )
-                  })
-                }
-              </DataTable.Row>
-            )
-          })
-        }
-        </ScrollView>
-
-        {/* <DataTable.Row>
-          <DataTable.Cell>John</DataTable.Cell>
-          <DataTable.Cell>john@kindacode.com</DataTable.Cell>
-          <DataTable.Cell numeric>33</DataTable.Cell>
-        </DataTable.Row> */}
-
-      </DataTable>
+        <Table borderStyle={{borderWidth: 1}}>
+          <Row data={col} style={styles.HeadStyle} textStyle={styles.HeadText}/>
+          <Rows data={data} style={styles.RowStyle} textStyle={styles.RowText}/>
+        </Table>
       </ScrollView>
-      {/* </ScrollView> */}
-    </View>
+      </ScrollView>
+      </View>
+
+    // <ScrollView>
+    // <View onStartShouldSetResponder={() => true} >
+    //   <Text style={styles.elapsedTime}>Elapsed Time: {time}</Text>
+    //   <ScrollView horizontal = {true}>
+    //   {/* <View style={styles.tableContainer}> */}
+    //   <DataTable>
+    //     <DataTable.Header style={styles.databeHeader}>
+    //       {
+    //         col.map((colName, index) => {
+    //           return (
+    //             <DataTable.Title style={styles.HeadText} key={index}>{colName}</DataTable.Title>
+    //           )
+    //         })
+    //       }
+    //     </DataTable.Header>
+    //     <ScrollView style={styles.dataWrapper}>
+    //     {
+    //       data.map((row, index) => {
+    //         return (
+    //           <DataTable.Row key={index} style={styles.databeBox}>
+    //             {
+    //               row.map((cell,index) => {
+    //                 return (
+    //                   <DataTable.Cell numberOfLines={10} style={styles.RowText} key={index}>{cell}</DataTable.Cell>
+    //                 )
+    //               })
+    //             }
+    //           </DataTable.Row>
+    //         )
+    //       })
+    //     }
+    //     </ScrollView>
+    //   </DataTable>
+    //   {/* </View> */}
+    //   </ScrollView>
+    // </View>
     // </ScrollView>
 
     // <View style={styles.container}>
+    //   <Text style={styles.elapsedTime}>Elapsed Time: {time}</Text>
     //     <ScrollView horizontal={true}>
     //       <View>
     //         <Table borderStyle={{borderColor: '#C1C0B9'}}>
@@ -93,7 +71,7 @@ const ViewResults = ({col,data,time}) => {
     //                 <Row
     //                   key={index}
     //                   data={dataRow}
-    //                   style={styles.row}
+    //                   style={[styles.row, index%2 && {backgroundColor: '#ffffff'}]}
     //                   textStyle={styles.text}
     //                 />
     //               ))
@@ -110,29 +88,57 @@ const ViewResults = ({col,data,time}) => {
 export default ViewResults;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
+  container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#ffffff' },
   // container: {
   //   paddingTop: 100,
   //   paddingHorizontal: 30,
   // },
+  tableContainer: {paddingTop: 100, paddingHorizontal: 30,},
   head: {  height: 40,  backgroundColor: '#f1f8ff'  },
   wrapper: { flexDirection: 'row' },
   title: { flex: 1, backgroundColor: '#f6f8fa' },
   row: {  height: 28  },
   text: { textAlign: 'center' },
   HeadStyle: { 
-    height: 50,
+    // height: 50,
     alignContent: "center",
-    backgroundColor: '#ffe0f0'
+    backgroundColor: '#00d1b550',
+    // minWidth: 130,
+    // maxWidth: 150,
   },
   RowStyle: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
     flex: 3,
+    // minWidth: 130,
+    // maxWidth: 150,
   },
-  TableText: { 
-    margin: 10
+  HeadText: { 
+    // margin: 10,
+    paddingLeft: 0,
+    // flex: 3,
+    minWidth: 130,
+    maxWidth: 130,
+    minHeight: 40,
+    maxHeight: 40,
+    // width: '100%',
+    // height: 100
+  },
+  RowText: { 
+    // margin: 10,
+    paddingLeft: 0,
+    // flex: 3,
+    minWidth: 130,
+    maxWidth: 130,
+    minHeight: 80,
+    maxHeight: 80,
+    // flexDirection: "row",
+    // alignItems: "center",
+    // justifyContent: "space-around",
+    flex: 3,
+    // width: '100%',
+    // height: 100
   },
   mainbox:{
     textAlign:'center',

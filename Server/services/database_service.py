@@ -23,7 +23,8 @@ class DatabaseService:
             return {"Response": "WRONG QUERY", "Status": 406}
 
         answer = cursor.fetchall()
-        cols = cursor.column_names
+        # cols = cursor.column_names
+        cols = [desc[0] for desc in cursor.description]
 
         t2 = time.time()
 
