@@ -38,7 +38,7 @@ const Query = ({setCol, setData, setTime, database}) => {
       setQueryProcess(false);
       alert("Please enter a query");
     } else {
-      SendQuery(getQuery, database, setData, setCol, setTime);
+      SendQuery(getQuery, "MySQL", setData, setCol, setTime);
       // console.log("tmp: ",tmp);
       console.log(database);
     //   fetch("http://192.168.1.248:5002/request", {

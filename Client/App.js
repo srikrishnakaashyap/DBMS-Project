@@ -5,6 +5,9 @@ import { View, Platform, KeyboardAvoidingView, StyleSheet, Keyboard, TouchableWi
 import Header from "./components/Header";
 import Query from "./components/Query";
 import ViewResults from "./components/ViewResults";
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 export default function App() {
   const [data, setData] = useState([[]]);
