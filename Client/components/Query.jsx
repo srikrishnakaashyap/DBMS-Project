@@ -38,59 +38,46 @@ const Query = ({setCol, setData, setTime, database}) => {
       setQueryProcess(false);
       alert("Please enter a query");
     } else {
-      // let tmp = await SendQuery(getQuery, getSqlBtn, getRsBtn);
-      // console.log(tmp);
+      SendQuery(getQuery, database, setData, setCol, setTime);
+      // console.log("tmp: ",tmp);
       console.log(database);
-      fetch("http://192.168.1.248:5002/request", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query: getQuery,
-        isSqlBtn: database=="MySQL"?true:false,
-        isRsBtn: database=="RDS"?true:false,
-      }),
-    })
-      .then((response) => 
-        // console.log(response)
-        response.json()
-        // console.log(code);
-      )
-      .then((responseJson) => {
-        // console.log(responseJson);
-        // console.log(code);
-        // return responseJson;
-        if (responseJson.Status === 200) {
-          // We will displaying the next screen
-          // alert(responseJson.Response);
-          // console.log(responseJson.Response);
-          let data = responseJson.Response;
-          let cols = responseJson.Header;
-          // let cols = []
-          // if(data && data.length>0) {
-          //   let numCols = data[0].length;
-          //   console.log(data[0].length);
-          //   console.log(numCols);
-          //   for(let i=0;i<numCols;i++) {
-          //     cols.push("Column "+String(i));
-          //   }
-          // }
-          // console.log(cols);
-          // setQueryOutput(responseJson.Response);
-          setData(data);
-          setCol(cols);
-          setTime(responseJson.ElapsedTime);
-        } else {
-          // We need to display the same screen with the error..
-          alert(responseJson.Response);
-        }
-      })
-      .catch((error) => {
-        console.log("FROM ERROR");
-        console.log(error);
-      });
+    //   fetch("http://192.168.1.248:5002/request", {
+    //   method: "POST",
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     query: getQuery,
+    //     isSqlBtn: database=="MySQL"?true:false,
+    //     isRsBtn: database=="RDS"?true:false,
+    //   }),
+    // })
+    //   .then((response) => 
+    //     // console.log(response)
+    //     response.json()
+    //     // console.log(code);
+    //   )
+    //   .then((responseJson) => {
+    //     // console.log(responseJson);
+    //     // console.log(code);
+    //     // return responseJson;
+    //     if (responseJson.Status === 200) {
+          
+    //       let data = responseJson.Response;
+    //       let cols = responseJson.Header;
+    //       setData(data);
+    //       setCol(cols);
+    //       setTime(responseJson.ElapsedTime);
+    //     } else {
+    //       // We need to display the same screen with the error..
+    //       alert(responseJson.Response);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log("FROM ERROR");
+    //     console.log(error);
+    //   });
     }
   };
 
@@ -176,7 +163,7 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     backgroundColor: "white",
-    fontFamily: 'monospace',
+    // fontFamily: 'monospace',
     color: '#00d1b5',
   }
 });

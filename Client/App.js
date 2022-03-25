@@ -7,7 +7,7 @@ import Query from "./components/Query";
 import ViewResults from "./components/ViewResults";
 
 export default function App() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([[]]);
   const [col, setCol] = useState([]);
   const [time, setTime] = useState([]);
   // const [getSqlBtn, setSqlBtn] = useState(true);
@@ -19,7 +19,7 @@ export default function App() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <ScrollView>
       <View>
         <Header database={database} setDatabase={setDatabase}/>
