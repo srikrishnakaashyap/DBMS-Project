@@ -1,5 +1,5 @@
 // import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View, Platform, KeyboardAvoidingView, StyleSheet, Keyboard, TouchableWithoutFeedback, ScrollView } from "react-native";
 import { ActivityIndicator } from "react-native";
 
@@ -13,11 +13,30 @@ LogBox.ignoreAllLogs();//Ignore all log notifications
 export default function App() {
   const [data, setData] = useState([[]]);
   const [col, setCol] = useState([]);
-  const [time, setTime] = useState([]);
+  const [time, setTime] = useState();
   // const [getSqlBtn, setSqlBtn] = useState(true);
   // const [getRsBtn, setRsBtn] = useState(false);
   const [database, setDatabase] = useState("MySQL");
   const [loading, setLoading] = useState(false);
+  const [queryStatus, setQueryStatus] = useState("");
+  const activateQueryFunc = useRef();
+
+  const resetData = () => {
+    setData([[]]);
+    setCol([]);
+    setTime();
+    setQueryStatus("");
+    // console.log("Hello")
+  }
+
+  const activateQueryProcess = () => {
+    // console.log("Hiiiii");
+    activateQueryFunc.activate();
+  }
+
+  // useEffect(() => {
+  //   activateQueryProcess = activateQueryFunc;
+  // }, [])
 
   return (
     <KeyboardAvoidingView
@@ -25,14 +44,14 @@ export default function App() {
       style={styles.container}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <ScrollView>
+        {/* <ScrollView> */}
       <View>
-        <Header database={database} setDatabase={setDatabase}/>
-        <Query setCol={setCol} setData={setData} setTime={setTime} database={database} setLoading={setLoading}/>
-        {!loading && <ViewResults col={col} data={data} time={time}></ViewResults>}
+        <Header database={database} setDatabase={setDatabase} activateQueryProcess={activateQueryProcess}/>
+        <Query setCol={setCol} setData={setData} setTime={setTime} database={database} setLoading={setLoading} resetData={resetData} activateQueryFunc={activateQueryFunc} setQueryStatus={setQueryStatus}/>
+        {!loading && <ViewResults col={col} data={data} time={time} queryStatus={queryStatus}></ViewResults>}
         {loading && <ActivityIndicator size="large" color={"#00d1b550"} />}
       </View>
-      </ScrollView>
+      {/* </ScrollView> */}
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );

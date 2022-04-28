@@ -5,15 +5,32 @@ import {
   StyleSheet,
   Text,
   View,
+  TouchableHighlight,
 } from "react-native";
-const Header = ({database, setDatabase}) => {
+import Tooltip from 'react-native-walkthrough-tooltip';
+
+const Header = ({database, setDatabase, activateQueryProcess}) => {
     // const [getQuery, setQuery] = useState("");
     // const [sql, setSql] = useState(true);
     // const [rs, setRs] = useState(false);
+    const [toolTipVisible, setToolTipVisible] = useState(true);
     // Improve the UI Here,
     return (
         <View>
-          <Text style={styles.title}>DBDS Project Task 1</Text>
+          {/* <View style={{ flexDirection: "row" ,marginLeft: 20, justifyContent: 'space-evenly' }}> */}
+          <Text style={styles.title}>DBDS Project
+          </Text>
+          {/* <Tooltip
+              isVisible={toolTipVisible}
+              content={<Text>Hello!</Text>}
+              placement="top"
+              onClose={() => setToolTipVisible(false)}
+            >
+              <TouchableHighlight style={styles.touchable}>
+                <Text>Press Me!!</Text>
+              </TouchableHighlight>
+            </Tooltip>
+          </View> */}
             <View style={styles.buttons}>
             {/* <Text style={styles.dbs}>Database:</Text> */}
             <View style={styles.btn}>
@@ -22,15 +39,21 @@ const Header = ({database, setDatabase}) => {
             <RadioButton
                 value="MySQL"
                 status={ database === 'MySQL' ? 'checked' : 'unchecked' }
-                onPress={() => setDatabase('MySQL')}
+                onPress={() => {
+                  setDatabase('MySQL');
+                  activateQueryProcess();
+                }}
             />
             </View>
             <View style={styles.btn}>
             <Text> Red Shift </Text>
             <RadioButton
-                value="RDS"
-                status={ database === 'RDS' ? 'checked' : 'unchecked' }
-                onPress={() => setDatabase('RDS')}
+                value="Redshift"
+                status={ database === 'Redshift' ? 'checked' : 'unchecked' }
+                onPress={() => {
+                  setDatabase('Redshift');
+                  activateQueryProcess();
+                }}
             />
             </View>
             </View>
@@ -84,7 +107,7 @@ const Header = ({database, setDatabase}) => {
       textAlign: "center",
       fontSize: 20,
       marginBottom: 10,
-      fontWeight: "bold"
+      fontWeight: "bold",
     },
     dbs: {
       fontWeight: "bold",
