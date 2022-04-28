@@ -35,7 +35,7 @@ const ViewResults = ({col, data, time, queryStatus}) => {
       {queryStatus!="" && <Text style={queryStatus == "Success" ? styles.serrorMessage : styles.errorMessage}>Query Status: {queryStatus} </Text>}
       {/* <ScrollView> */}
       {/* <Text>{wa}</Text> */}
-      <ScrollView horizontal = {true} contentContainerStyle={{ flexGrow: 1, height: '75%'}}>
+      { queryStatus=="Success" && <ScrollView horizontal = {true} contentContainerStyle={{ flexGrow: 1, height: '75%'}}>
         <View>
         <Table borderStyle={{borderWidth: 1}}>
           <Row data={col} widthArr={wa} style={styles.HeadStyle} textStyle={styles.HeadText}/>
@@ -58,7 +58,7 @@ const ViewResults = ({col, data, time, queryStatus}) => {
         </Table>
         </ScrollView>
         </View>
-      </ScrollView>
+      </ScrollView>}
       {/* </ScrollView> */}
       </View>
 

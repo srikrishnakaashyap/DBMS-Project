@@ -48,7 +48,7 @@ export default function App() {
       <View>
         <Header database={database} setDatabase={setDatabase} activateQueryProcess={activateQueryProcess}/>
         <Query setCol={setCol} setData={setData} setTime={setTime} database={database} setLoading={setLoading} resetData={resetData} activateQueryFunc={activateQueryFunc} setQueryStatus={setQueryStatus}/>
-        {!loading && time!=undefined && <ViewResults col={col} data={data} time={time} queryStatus={queryStatus}></ViewResults>}
+        {!loading && <ViewResults col={col} data={data} time={time} queryStatus={queryStatus}></ViewResults>}
         {loading && <ActivityIndicator size="large" color={"#00d1b550"} />}
       </View>
       {/* </ScrollView> */}
