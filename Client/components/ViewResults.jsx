@@ -1,22 +1,65 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { StyleSheet, View, Text, ScrollView } from "react-native";
 import { DataTable } from "react-native-paper";
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
 
-const ViewResults = ({col,data,time}) => {
+const ViewResults = ({col, data, time, queryStatus}) => {
+  // const leftRef = useRef<ScrollView>(null);
   console.log(data);
+  console.log(time);
+  const [wa, setWa] = useState([]);
+  const tmp = Array(data[0].length).fill(0);
+
+  useEffect(()=>{
+    
+    for(let i=0;i<data.length;i++) {
+      // console.log(data[i].map(e => e.length));
+      for(let j=0;j<data[i].length;j++) {
+        // console.log(String(data[i][j]).length);
+        // console.log(wa[j]);
+        tmp[j] = Math.max(tmp[j],String(data[i][j]).length);
+      }
+    }
+    // console.log(tmp);
+    for(let i=0;i<col.length;i++) {
+      tmp[i] = Math.max(tmp[i],String(col[i]).length);
+    }
+    // console.log(tmp);
+    setWa(tmp.map(x => x*8));
+  }, [])
 
   return (
     <View onStartShouldSetResponder={() => true}>
-      <Text style={styles.elapsedTime}>Elapsed Time: {time}</Text>
-      <ScrollView>
-      <ScrollView horizontal = {true}>
+      {time!=undefined && <Text style={styles.elapsedTime}>Elapsed Time: {time} seconds </Text>}
+      {/* {queryStatus!="" && <Text style={styles.errorMessage}>Query Status: {queryStatus} </Text>} */}
+      {queryStatus!="" && <Text style={queryStatus == "Success" ? styles.serrorMessage : styles.errorMessage}>Query Status: {queryStatus} </Text>}
+      {/* <ScrollView> */}
+      {/* <Text>{wa}</Text> */}
+      <ScrollView horizontal = {true} contentContainerStyle={{ flexGrow: 1, height: '75%'}}>
+        <View>
         <Table borderStyle={{borderWidth: 1}}>
-          <Row data={col} style={styles.HeadStyle} textStyle={styles.HeadText}/>
-          <Rows data={data} style={styles.RowStyle} textStyle={styles.RowText}/>
+          <Row data={col} widthArr={wa} style={styles.HeadStyle} textStyle={styles.HeadText}/>
         </Table>
+        
+        <ScrollView style={{marginTop: -1}}>
+        <Table borderStyle={{borderWidth: 1}}>
+          <Rows data={data} widthArr={wa} style={styles.RowStyle} textStyle={styles.RowText}/>
+          {/* {
+            data.map((d,i) => (
+              <Row
+                key={i}
+                data={d}
+                // widthArr={state.widthArr}
+                style={[styles.RowStyle, i%2 && {backgroundColor: '#F7F6E7'}]}
+                textStyle={styles.RowText}
+              />
+            ))
+          } */}
+        </Table>
+        </ScrollView>
+        </View>
       </ScrollView>
-      </ScrollView>
+      {/* </ScrollView> */}
       </View>
 
     // <ScrollView>
@@ -118,10 +161,10 @@ const styles = StyleSheet.create({
     // margin: 10,
     paddingLeft: 0,
     // flex: 3,
-    minWidth: 130,
-    maxWidth: 130,
-    minHeight: 40,
-    maxHeight: 40,
+    // minWidth: 130,
+    // maxWidth: 130,
+    minHeight: 30,
+    maxHeight: 30,
     // width: '100%',
     // height: 100
   },
@@ -129,10 +172,10 @@ const styles = StyleSheet.create({
     // margin: 10,
     paddingLeft: 0,
     // flex: 3,
-    minWidth: 130,
-    maxWidth: 130,
-    minHeight: 80,
-    maxHeight: 80,
+    // minWidth: 130,
+    // maxWidth: 130,
+    minHeight: 50,
+    maxHeight: 50,
     // flexDirection: "row",
     // alignItems: "center",
     // justifyContent: "space-around",
@@ -158,8 +201,22 @@ const styles = StyleSheet.create({
   },
   elapsedTime:{
     textAlign: "center",
-    fontStyle: "italic",
-    marginTop: 10,
+    // fontStyle: "italic",
+    marginTop: 5,
+  },
+  errorMessage:{
+    textAlign: "center",
+    fontFamily: 'monospace',
+    marginTop: 5,
+    marginBottom: 5,
+    color: '#d1001c',
+  },
+  serrorMessage:{
+    textAlign: "center",
+    fontFamily: 'monospace',
+    marginTop: 5,
+    marginBottom: 5,
+    color : '#00d1b5',
   },
   // container: { 
   //   flex: 1, 

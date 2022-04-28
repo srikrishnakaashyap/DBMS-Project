@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   StyleSheet,
@@ -17,19 +17,47 @@ import {
   Keyboard,
 } from "react-native";
 
+// import Tooltip from 'react-native-elements';
+import Tooltip from 'react-native-walkthrough-tooltip';
+
 import CheckBox from "expo-checkbox";
 
 import SendQuery from "../services/SendQuery";
 
 import ViewResults from "./ViewResults";
 
-const Query = ({setCol, setData, setTime, database, setLoading}) => {
+const Query = ({setCol, setData, setTime, database, setLoading, resetData, activateQueryFunc, setQueryStatus}) => {
   const [getQuery, setQuery] = useState("");
   // const [getSqlBtn, setSqlBtn] = useState(true);
   // const [getRsBtn, setRsBtn] = useState(false);
   const [getQueryProcess, setQueryProcess] = useState(false);
   const [queryOutput, setQueryOutput] = useState("");
+  // const [toolTipVisible, setToolTipVisible] = useState(false);
   // const tmp = "";
+
+  useEffect(() => {
+    activateQueryFunc.activate = activateQueryProcess
+  }, [])
+
+  const activateQueryProcess = () => {
+    // console.log("hsghsg");
+    setQueryProcess(false);
+  }
+
+  const handleClearQueryButton = () => {
+    if(getQuery === "") {
+      alert("No query to clear");
+    } 
+    else {
+      // resetData;
+      setQuery("");
+    }
+  }
+
+  // const makeToolTipVisible = () => {
+  //   console.log("gggg");
+  //   setToolTipVisible(true);
+  // }
 
   const handleExecuteQueryButton = () => {
     // console.log(getQuery);
@@ -38,7 +66,7 @@ const Query = ({setCol, setData, setTime, database, setLoading}) => {
       setQueryProcess(false);
       alert("Please enter a query");
     } else {
-      SendQuery(getQuery, database, setData, setCol, setTime, setLoading);
+      SendQuery(getQuery, database, setData, setCol, setTime, setLoading, resetData, setQueryStatus);
       // console.log("tmp: ",tmp);
       console.log(database);
     //   fetch("http://192.168.1.248:5002/request", {
@@ -107,14 +135,33 @@ const Query = ({setCol, setData, setTime, database, setLoading}) => {
               value={getQuery}
               placeholder="Enter the Query here: "
             />
+            {/* <Tooltip
+              isVisible={toolTipVisible}
+              content={<Text>!</Text>}
+              placement="top"
+              onClose={() => setToolTipVisible(false)}
+            >
+              <TouchableHighlight style={styles.touchable}>
+                <Text>Press me</Text>
+              </TouchableHighlight>
+            </Tooltip> */}
           </View>
-          <View>
+          <View style={{ flexDirection: "row" ,marginLeft: 20, justifyContent: 'space-evenly' }}>
             <Button
               disabled={getQueryProcess}
               title="Execute Query"
               onPress={() => {
                 setQueryProcess(true);
                 handleExecuteQueryButton();
+              }}
+            />
+            <Button
+              // disabled={getQueryProcess}
+              title="Clear Query"
+              onPress={() => {
+                // setQueryProcess(true);
+                handleClearQueryButton();
+                resetData();
               }}
             />
           </View>
@@ -163,7 +210,7 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     backgroundColor: "white",
-    // fontFamily: 'monospace',
+    fontFamily: 'monospace',
     color: '#00d1b5',
   }
 });
