@@ -15,16 +15,16 @@ def request_function():
 
     request_data = dict(request.json)
     # Query and Get Data with AWS
-    # 
-    #                                          
+    #
+    #
 
     if request_data['isSqlBtn']:
         # Execute in SQL Table
-        response = DatabaseService().execute_mysql_query(request_data['query'])
+        response = DatabaseService().execute_mysql_query(
+            request_data['query'])
     elif request_data['isRsBtn']:
-        #Execute RS Table
-        response = DatabaseService().execute_redshift_query(request_data['query'])
-
+        # Execute RS Table
+        response = DatabaseService().execute_redshift_query(
+            request_data['query'])
 
     return response
-
