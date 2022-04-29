@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CheckBox from "expo-checkbox";
 import { RadioButton } from 'react-native-paper';
 import {
@@ -7,13 +7,34 @@ import {
   View,
   TouchableHighlight,
 } from "react-native";
+import SendQuery from "../services/SendQuery";
 import Tooltip from 'react-native-walkthrough-tooltip';
 
-const Header = ({database, setDatabase, activateQueryProcess}) => {
+const Header = ({database, dataset, setDatabase, setDataset, activateQueryProcess, setData, setCol, setTime, setLoading, setQueryStatus}) => {
     // const [getQuery, setQuery] = useState("");
     // const [sql, setSql] = useState(true);
     // const [rs, setRs] = useState(false);
     const [toolTipVisible, setToolTipVisible] = useState(true);
+
+    const changeDataset = (ds) => {
+      let dbquery = ""
+      if(database=="MySQL") {
+        if(ds=="InstaCart") {
+          dbquery = "Use Instacart;"
+        } else {
+          dbquery = "Use ABC;"
+        }
+      } else {
+        if(ds=="InstaCart") {
+          dbquery = "Use instacart;"
+        } else {
+          dbquery = "Use abc;"
+        }
+      }
+      console.log(dbquery);
+      SendQuery(dbquery, database, setData, setCol, setTime, setLoading, setQueryStatus);
+    }
+
     // Improve the UI Here,
     return (
         <View>
@@ -34,8 +55,9 @@ const Header = ({database, setDatabase, activateQueryProcess}) => {
             <View style={styles.buttons}>
             {/* <Text style={styles.dbs}>Database:</Text> */}
             <View style={styles.btn}>
-            <Text style={styles.dbs}>Database:</Text>
-            <Text>My Sql </Text>
+
+            <Text style={styles.dbs}>Connection:</Text>
+            <Text>MySQL </Text>
             <RadioButton
                 value="MySQL"
                 status={ database === 'MySQL' ? 'checked' : 'unchecked' }
@@ -46,12 +68,40 @@ const Header = ({database, setDatabase, activateQueryProcess}) => {
             />
             </View>
             <View style={styles.btn}>
-            <Text> Red Shift </Text>
+            <Text> RedShift </Text>
             <RadioButton
                 value="Redshift"
                 status={ database === 'Redshift' ? 'checked' : 'unchecked' }
                 onPress={() => {
                   setDatabase('Redshift');
+                  activateQueryProcess();
+                }}
+            />
+            </View>
+            </View>
+
+            <View style={styles.buttons}>
+            <View style={styles.btn}>
+            <Text style={styles.dbs}>Database:</Text>
+            <Text> InstaCart </Text>
+            <RadioButton
+                value="InstaCart"
+                status={ dataset === 'InstaCart' ? 'checked' : 'unchecked' }
+                onPress={() => {
+                  setDataset('InstaCart');
+                  // changeDataset('InstaCart');
+                  activateQueryProcess();
+                }}
+            />
+            </View>
+            <View style={styles.btn}>
+            <Text> ABC </Text>
+            <RadioButton
+                value="ABC"
+                status={ dataset === 'ABC' ? 'checked' : 'unchecked' }
+                onPress={() => {
+                  setDataset('ABC');
+                  // changeDataset('ABC');
                   activateQueryProcess();
                 }}
             />
@@ -74,7 +124,7 @@ const Header = ({database, setDatabase, activateQueryProcess}) => {
       flexDirection: "row",
       justifyContent: "flex-end",
       fontWeight: "bold",
-      marginTop: 5,
+      marginTop: 1,
     },
   
     checkbox: {
@@ -106,6 +156,7 @@ const Header = ({database, setDatabase, activateQueryProcess}) => {
     title: {
       textAlign: "center",
       fontSize: 20,
+      marginTop: -20,
       marginBottom: 10,
       fontWeight: "bold",
     },

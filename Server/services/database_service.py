@@ -11,11 +11,10 @@ class DatabaseService:
     MySqlConnection = None
     RedShiftConnection = None
 
-    def execute_redshift_query(self, query):
-
-        print("EXECUTING REDSHIFT")
-
-        conn = DatabaseService.get_connection("REDSHIFT")
+    def execute_common_query(self, query, database, dataset):
+        print("EXECUTING COMMON QUERY")
+        print(query)
+        conn = DatabaseService.get_connection(database)
         cursor = conn.cursor()
 
         t1 = time.time()
@@ -24,10 +23,46 @@ class DatabaseService:
             cursor.execute(query)
         except Exception as err:
             return {"Response": str(err), "Status": 406}
+        conn.commit()
+        t2 = time.time()
 
-        answer = cursor.fetchall()
-        # cols = cursor.column_names
-        cols = [desc[0] for desc in cursor.description]
+        t = t2 - t1
+
+        print(t)
+
+        return jsonify({"ElapsedTime": t*1000, "Status": 200})
+
+
+    def execute_redshift_query(self, query):
+
+        print("EXECUTING REDSHIFT")
+
+        conn = DatabaseService.get_connection("REDSHIFT")
+        cursor = conn.cursor()
+        # print(dataset)
+        # if(dataset=="InstaCart"):
+        #     cursor.execute('set search_path to public;')
+        # else:
+        #     cursor.execute('set search_path to abc;')
+        # conn.commit()
+        # print(cursor.fetchall())
+
+        t1 = time.time()
+
+        try:
+            cursor.execute(query)
+        except Exception as err:
+            return {"Response": str(err), "Status": 406}
+
+        answer = {}
+        cols = {}
+
+        if cursor.pgresult_ptr is not None:
+            answer = cursor.fetchall()
+            cols = [desc[0] for desc in cursor.description]
+        # answer = cursor.fetchall()
+        # # cols = cursor.column_names
+        # cols = [desc[0] for desc in cursor.description]
 
         t2 = time.time()
 
@@ -41,6 +76,13 @@ class DatabaseService:
 
         conn = DatabaseService.get_connection("MYSQL")
         cursor = conn.cursor()
+        # print(dataset)
+        # if(dataset=="InstaCart"):
+        #     cursor.execute("use Instacart;")
+        # else:
+        #     cursor.execute("use ABC;")
+        # conn.commit()
+        # print(cursor.fetchall())
 
         t1 = time.time()
 
@@ -50,6 +92,12 @@ class DatabaseService:
             print(err)
             return {"Response": err.msg, "Status": 406}
 
+        # answer = {}
+        # cols = {}
+
+        # if cursor.pgresult_ptr is not None:
+        #     answer = cursor.fetchall()
+        #     cols = cursor.column_names
         answer = cursor.fetchall()
         cols = cursor.column_names
         # answer.insert(0,cursor.column_names)
@@ -99,6 +147,8 @@ class DatabaseService:
                 user=USER,
                 database=DBNAME,
                 password=PASSWORD)
+
+            conn.autocommit = True
             DatabaseService.RedShiftConnection = conn
 
         except Exception as err:

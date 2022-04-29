@@ -1,9 +1,9 @@
-const SendQuery = (query, database, setData, setCol, setTime, setLoading, resetData, setQueryStatus) => {
+const SendQuery = (query, database, dataset, setData, setCol, setTime, setLoading, setQueryStatus) => {
   console.log(query);
   // console.log(isSqlBtn);
   // console.log(isRsBtn);
   setLoading(true);
-  fetch("http://192.168.1.199:5002/request", {
+  fetch("http://192.168.1.248:5002/request", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -13,6 +13,8 @@ const SendQuery = (query, database, setData, setCol, setTime, setLoading, resetD
         query: query,
         isSqlBtn: database=="MySQL"?true:false,
         isRsBtn: database=="Redshift"?true:false,
+        isInstaCart: dataset=="InstaCart"?true:false,
+        isABC: dataset=="ABC"?true:false,
       }),
     })
       .then((response) => 

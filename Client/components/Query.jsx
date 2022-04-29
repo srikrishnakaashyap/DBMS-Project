@@ -26,7 +26,7 @@ import SendQuery from "../services/SendQuery";
 
 import ViewResults from "./ViewResults";
 
-const Query = ({setCol, setData, setTime, database, setLoading, resetData, activateQueryFunc, setQueryStatus}) => {
+const Query = ({setCol, setData, setTime, database, dataset, setLoading, resetData, activateQueryFunc, setQueryStatus}) => {
   const [getQuery, setQuery] = useState("");
   // const [getSqlBtn, setSqlBtn] = useState(true);
   // const [getRsBtn, setRsBtn] = useState(false);
@@ -66,7 +66,7 @@ const Query = ({setCol, setData, setTime, database, setLoading, resetData, activ
       setQueryProcess(false);
       alert("Please enter a query");
     } else {
-      SendQuery(getQuery, database, setData, setCol, setTime, setLoading, resetData, setQueryStatus);
+      SendQuery(getQuery, database, dataset, setData, setCol, setTime, setLoading, setQueryStatus);
       // console.log("tmp: ",tmp);
       console.log(database);
     //   fetch("http://192.168.1.248:5002/request", {

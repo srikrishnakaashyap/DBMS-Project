@@ -17,6 +17,7 @@ export default function App() {
   // const [getSqlBtn, setSqlBtn] = useState(true);
   // const [getRsBtn, setRsBtn] = useState(false);
   const [database, setDatabase] = useState("MySQL");
+  const [dataset, setDataset] = useState("InstaCart");
   const [loading, setLoading] = useState(false);
   const [queryStatus, setQueryStatus] = useState("");
   const activateQueryFunc = useRef();
@@ -46,8 +47,8 @@ export default function App() {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         {/* <ScrollView> */}
       <View>
-        <Header database={database} setDatabase={setDatabase} activateQueryProcess={activateQueryProcess}/>
-        <Query setCol={setCol} setData={setData} setTime={setTime} database={database} setLoading={setLoading} resetData={resetData} activateQueryFunc={activateQueryFunc} setQueryStatus={setQueryStatus}/>
+        <Header database={database} dataset={dataset} setDatabase={setDatabase} setDataset={setDataset} activateQueryProcess={activateQueryProcess} setData={setData} setCol={setCol} setTime={setTime} setLoading={setLoading} setQueryStatus={setQueryStatus}/>
+        <Query setCol={setCol} setData={setData} setTime={setTime} database={database} dataset={dataset} setLoading={setLoading} resetData={resetData} activateQueryFunc={activateQueryFunc} setQueryStatus={setQueryStatus}/>
         {!loading && <ViewResults col={col} data={data} time={time} queryStatus={queryStatus}></ViewResults>}
         {loading && <ActivityIndicator size="large" color={"#00d1b550"} />}
       </View>

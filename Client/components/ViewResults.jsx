@@ -2,40 +2,45 @@ import React, { useEffect, useState, useRef } from "react";
 import { StyleSheet, View, Text, ScrollView } from "react-native";
 import { DataTable } from "react-native-paper";
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
+import { Dimensions } from 'react-native';
 
 const ViewResults = ({col, data, time, queryStatus}) => {
   // const leftRef = useRef<ScrollView>(null);
   console.log(data);
   console.log(time);
   const [wa, setWa] = useState([]);
-  const tmp = Array(data[0].length).fill(0);
+  const windowWidth = Dimensions.get('window').width;
+  const windowHeight = Dimensions.get('window').height;
+  let tmp = [];
 
   useEffect(()=>{
-    
-    for(let i=0;i<data.length;i++) {
-      // console.log(data[i].map(e => e.length));
-      for(let j=0;j<data[i].length;j++) {
-        // console.log(String(data[i][j]).length);
-        // console.log(wa[j]);
-        tmp[j] = Math.max(tmp[j],String(data[i][j]).length);
+    if(data[0]!=undefined){
+      tmp = Array(data[0].length).fill(0);
+      for(let i=0;i<data.length;i++) {
+        // console.log(data[i].map(e => e.length));
+        for(let j=0;j<data[i].length;j++) {
+          // console.log(String(data[i][j]).length);
+          // console.log(wa[j]);
+          tmp[j] = Math.max(tmp[j],String(data[i][j]).length);
+        }
       }
+      // console.log(tmp);
+      for(let i=0;i<col.length;i++) {
+        tmp[i] = Math.max(tmp[i],String(col[i]).length);
+      }
+      // console.log(tmp);
+      setWa(tmp.map(x => x*8));
     }
-    // console.log(tmp);
-    for(let i=0;i<col.length;i++) {
-      tmp[i] = Math.max(tmp[i],String(col[i]).length);
-    }
-    // console.log(tmp);
-    setWa(tmp.map(x => x*8));
   }, [])
 
   return (
-    <View onStartShouldSetResponder={() => true}>
-      {time!=undefined && <Text style={styles.elapsedTime}>Elapsed Time: {time} seconds </Text>}
+    <View onStartShouldSetResponder={() => true} style={{height: windowHeight*0.68}}>
+      {time!=undefined && <Text style={styles.elapsedTime}>Elapsed Time: {time} milliseconds </Text>}
       {/* {queryStatus!="" && <Text style={styles.errorMessage}>Query Status: {queryStatus} </Text>} */}
       {queryStatus!="" && <Text style={queryStatus == "Success" ? styles.serrorMessage : styles.errorMessage}>Query Status: {queryStatus} </Text>}
       {/* <ScrollView> */}
       {/* <Text>{wa}</Text> */}
-      { queryStatus=="Success" && <ScrollView horizontal = {true} contentContainerStyle={{ flexGrow: 1, height: '75%'}}>
+      { queryStatus=="Success" && <ScrollView horizontal = {true} contentContainerStyle={{ flexGrow: 1}}>
         <View>
         <Table borderStyle={{borderWidth: 1}}>
           <Row data={col} widthArr={wa} style={styles.HeadStyle} textStyle={styles.HeadText}/>
@@ -159,7 +164,8 @@ const styles = StyleSheet.create({
   },
   HeadText: { 
     // margin: 10,
-    paddingLeft: 0,
+    paddingLeft: 4,
+    paddingTop: 3,
     // flex: 3,
     // minWidth: 130,
     // maxWidth: 130,
@@ -170,7 +176,8 @@ const styles = StyleSheet.create({
   },
   RowText: { 
     // margin: 10,
-    paddingLeft: 0,
+    paddingLeft: 3,
+    paddingTop: 7,
     // flex: 3,
     // minWidth: 130,
     // maxWidth: 130,
